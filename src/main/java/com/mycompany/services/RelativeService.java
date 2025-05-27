@@ -15,11 +15,13 @@ import com.mycompany.pojo.User;
  *
  * @author baoto
  */
-public interface  RelativeService {
+public interface RelativeService {
 
     public List<Relative> getAllRelatives();
 
     public List<Relative> getRelativesByResident(User user);
+    
+    public Relative getRelativeById(Long relativeId);
 
     public Relative addRelative(User user, Map<String, String> params);
 

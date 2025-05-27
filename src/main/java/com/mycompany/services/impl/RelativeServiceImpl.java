@@ -5,6 +5,7 @@
 
 package com.mycompany.services.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,19 +42,20 @@ public class RelativeServiceImpl implements RelativeService {
         Relative r = new Relative();
         r.setFullName(params.get("fullName"));
         r.setRelationship(params.get("relationship"));
-        r.setPhone(params.get("phone"));
+        r.setPhone(params.get("phone")); 
         r.setCccd(params.get("cccd"));
         r.setResidentId(user);
-        if (params.containsKey("hasAccessCard"))
-            r.setHasAccessCard(Boolean.valueOf(params.get("hasAccessCard")));
-        if (params.containsKey("hasVehicleCard"))
-            r.setHasVehicleCard(Boolean.valueOf(params.get("hasVehicleCard")));
-        if (params.containsKey("createdAt"))
-            r.setCreatedAt(java.sql.Timestamp.valueOf(params.get("createdAt")));
-        if (params.containsKey("updatedAt"))
-            r.setUpdatedAt(java.sql.Timestamp.valueOf(params.get("updatedAt")));
-        if (params.containsKey("status"))
-            r.setStatus(Boolean.valueOf(params.get("status")));
+        
+        r.setHasAccessCard(params.containsKey("hasAccessCard") ? 
+            Boolean.valueOf(params.get("hasAccessCard")) : false);
+        r.setHasVehicleCard(params.containsKey("hasVehicleCard") ? 
+            Boolean.valueOf(params.get("hasVehicleCard")) : false);
+        
+        Date now = new Date();
+        r.setCreatedAt(now);
+        r.setUpdatedAt(now);
+        r.setStatus(true);
+
         return relativeRepo.addRelative(r);
     }
 
@@ -63,6 +65,7 @@ public class RelativeServiceImpl implements RelativeService {
         if (r == null) {
             return null;
         }
+
         if (params.containsKey("fullName")) {
             r.setFullName(params.get("fullName"));
         }
@@ -75,17 +78,27 @@ public class RelativeServiceImpl implements RelativeService {
         if (params.containsKey("cccd")) {
             r.setCccd(params.get("cccd"));
         }
-        if (params.containsKey("hasAccessCard"))
+        if (params.containsKey("hasAccessCard")) {
             r.setHasAccessCard(Boolean.valueOf(params.get("hasAccessCard")));
-        if (params.containsKey("hasVehicleCard"))
+        }
+        if (params.containsKey("hasVehicleCard")) {
             r.setHasVehicleCard(Boolean.valueOf(params.get("hasVehicleCard")));
-        if (params.containsKey("createdAt"))
-            r.setCreatedAt(java.sql.Timestamp.valueOf(params.get("createdAt")));
-        if (params.containsKey("updatedAt"))
-            r.setUpdatedAt(java.sql.Timestamp.valueOf(params.get("updatedAt")));
-        if (params.containsKey("status"))
+        }
+        if (params.containsKey("status")) {
             r.setStatus(Boolean.valueOf(params.get("status")));
+        }
+
+        r.setUpdatedAt(new Date());
         relativeRepo.updateRelative(r);
         return r;
+    }
+
+    @Override
+    public Relative getRelativeById(Long relativeId) {
+        try {
+            return relativeRepo.getRelativeById(relativeId);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

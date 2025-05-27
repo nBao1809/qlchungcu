@@ -1,0 +1,1062 @@
+{
+	"info": {
+		"_postman_id": "random-uuid",
+		"name": "QLyChungCu APIs",
+		"description": "API collection for QLyChungCu system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/QLyChungCu",
+			"type": "string"
+		},
+		{
+			"key": "userToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "adminToken",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Authentication & User Management",
+			"item": [
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"newPassword\": \"newpass123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/change-password",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "change-password"]
+						}
+					}
+				},
+				{
+					"name": "Update Avatar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/update-avatar",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "update-avatar"]
+						}
+					}
+				},
+				{
+					"name": "Get Users (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/users?role=RESIDENT",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "users"],
+							"query": [
+								{
+									"key": "role",
+									"value": "RESIDENT"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create User (Admin)", 
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "newuser",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pass123",
+									"type": "text"
+								},
+								{
+									"key": "fullName", 
+									"value": "New User",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "user@example.com",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0123456789",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "RESIDENT",
+									"type": "text"
+								},
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "users"]
+						}
+					}
+				},
+				{
+					"name": "Update User (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization", 
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Updated Name\",\n    \"email\": \"updated@example.com\",\n    \"phone\": \"0987654321\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/users/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "users", "1"]
+						}
+					}
+				},
+				{
+					"name": "Toggle User Status (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/users/1/toggle-status",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "users", "1", "toggle-status"]
+						}
+					}
+				},
+				{
+					"name": "Login as Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "adminuser",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "login"]
+						}
+					}
+				},
+				{
+					"name": "Login as Resident",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "testuser",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "test123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "login"]
+						}
+					}
+				},
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "profile"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Apartment Management",
+			"item": [
+				{
+					"name": "Get All Apartments (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/apartments",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "apartments"]
+						}
+					}
+				},
+				{
+					"name": "Create New Apartment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"apartmentCode\": \"A101\",\n    \"floor\": 1,\n    \"block\": \"A\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/apartments",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "apartments"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Vehicle Management",
+			"item": [
+				{
+					"name": "Get User Vehicles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/vehicles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "vehicles"]
+						}
+					}
+				},
+				{
+					"name": "Register New Vehicle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"licensePlate\": \"51F1-23456\",\n    \"vehicleType\": \"MOTORBIKE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/vehicles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "vehicles"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Bill Management",
+			"item": [
+				{
+					"name": "Get All Bills (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/bills",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "bills"]
+						}
+					}
+				},
+				{
+					"name": "Get Bill Details (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/bills/1/details",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "bills", "1", "details"]
+						}
+					}
+				},
+				{
+					"name": "Update Bill (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"PAID\",\n    \"details\": [\n        {\n            \"feeTypeId\": 1,\n            \"quantity\": 120,\n            \"unitPrice\": 3500,\n            \"note\": \"Tiền điện tháng 5 (cập nhật)\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/bills/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "bills", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete Bill (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/bills/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "bills", "1"]
+						}
+					}
+				},
+				{
+					"name": "Confirm Payment (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/bills/1/confirm-payment",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "bills", "1", "confirm-payment"]
+						}
+					}
+				},
+				{
+					"name": "Get Fee Types (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/bills/fee-types",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "bills", "fee-types"]
+						}
+					}
+				},
+				{
+					"name": "Get User Bills",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/bills",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "bills"]
+						}
+					}
+				},
+				{
+					"name": "Create New Bill (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"apartmentId\": 1,\n    \"month\": 5,\n    \"year\": 2025,\n    \"details\": [\n        {\n            \"feeTypeId\": 1,\n            \"quantity\": 100,\n            \"unitPrice\": 3500,\n            \"note\": \"Tiền điện tháng 5\"\n        },\n        {\n            \"feeTypeId\": 2,\n            \"quantity\": 15,\n            \"unitPrice\": 25000,\n            \"note\": \"Tiền nước tháng 5\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/bills",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "bills"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "5. Complaint Management",
+			"item": [				{
+					"name": "Get User Complaints",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/complaints",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "complaints"]
+						}
+					}
+				},
+				{
+					"name": "Get Complaint Detail (User)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/complaints/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "complaints", "1"]
+						}
+					}
+				},
+				{
+					"name": "Get Complaint Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/complaints/3",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "complaints", "3"]
+						}
+					}
+				},
+				{
+					"name": "Submit New Complaint",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Vấn đề về tiếng ồn",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "Căn hộ tầng trên gây tiếng ồn sau 22h",
+									"type": "text"
+								},
+								{
+									"key": "imageProof",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/complaints",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "complaints"]
+						}
+					}
+				},				{
+					"name": "Get All Complaints (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/complaints",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "complaints"]
+						}
+					}
+				},
+				{
+					"name": "Get Complaint Detail (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/complaints/3",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "complaints", "3"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "6. Relative Management",
+			"item": [
+				{
+					"name": "Get All Relatives (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/relatives",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "relatives"]
+						}
+					}
+				},
+				{
+					"name": "Get User Relatives",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/relatives",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "relatives"]
+						}
+					}
+				},
+				{
+					"name": "Add New Relative",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Nguyễn Văn A\",\n    \"relationship\": \"CON\",\n    \"dateOfBirth\": \"2000-01-01\",\n    \"phone\": \"0123456789\",\n    \"email\": \"relative@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/relatives",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "relatives"]
+						}
+					}
+				},
+				{
+					"name": "Update Relative",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Nguyễn Văn A (Updated)\",\n    \"relationship\": \"CON\",\n    \"dateOfBirth\": \"2000-01-01\",\n    \"phone\": \"0987654321\",\n    \"email\": \"updated.relative@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/relatives/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "relatives", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "7. Locker Item Management",
+			"item": [
+				{
+					"name": "Get All Locker Items (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/locker-items",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "locker-items"]
+						}
+					}
+				},
+				{
+					"name": "Add New Locker Item (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"itemName\": \"Package from Amazon\",\n    \"lockerNumber\": \"A123\",\n    \"arrivalDate\": \"2025-05-27\",\n    \"status\": \"PENDING\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/locker-items",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "locker-items"]
+						}
+					}
+				},
+				{
+					"name": "Update Locker Item (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"DELIVERED\",\n    \"deliveryDate\": \"2025-05-27\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/locker-items/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "locker-items", "1"]
+						}
+					}
+				},
+				{
+					"name": "Get User Locker Items",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/locker-items",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "locker-items"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "8. Survey Management",
+			"item": [
+				{
+					"name": "Get All Surveys (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/surveys",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "surveys"]
+						}
+					}
+				},
+				{
+					"name": "Create Survey (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Khảo sát về dịch vụ vệ sinh\",\n    \"description\": \"Đánh giá chất lượng dịch vụ vệ sinh tháng 5/2025\",\n    \"startDate\": \"2025-05-27\",\n    \"endDate\": \"2025-06-03\",\n    \"questions\": [\n        {\n            \"content\": \"Bạn đánh giá thế nào về chất lượng vệ sinh hành lang?\",\n            \"type\": \"RATING\",\n            \"options\": [\"1\", \"2\", \"3\", \"4\", \"5\"]\n        },\n        {\n            \"content\": \"Bạn có hài lòng với tần suất dọn vệ sinh không?\",\n            \"type\": \"YES_NO\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/surveys",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "surveys"]
+						}
+					}
+				},
+				{
+					"name": "Update Survey Status (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"CLOSED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/surveys/1/status",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "surveys", "1", "status"]
+						}
+					}
+				},
+				{
+					"name": "Get Survey Detail (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/surveys/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "surveys", "1"]
+						}
+					}
+				},
+				{
+					"name": "Get Survey Results (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/surveys/1/results",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "surveys", "1", "results"]
+						}
+					}
+				},
+				{
+					"name": "Get Available Surveys (User)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/surveys",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "surveys"]
+						}
+					}
+				},
+				{
+					"name": "Get Survey Detail (User)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/surveys/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "surveys", "1"]
+						}
+					}
+				},
+				{
+					"name": "Submit Survey Response",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"responses\": [\n        {\n            \"questionId\": 1,\n            \"answer\": \"4\"\n        },\n        {\n            \"questionId\": 2,\n            \"answer\": \"YES\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/surveys/1/respond",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "surveys", "1", "respond"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

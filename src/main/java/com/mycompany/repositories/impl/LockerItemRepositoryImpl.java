@@ -29,37 +29,57 @@ public class LockerItemRepositoryImpl implements LockerItemRepository {
 
     @Override
     public List<LockerItem> getAllLockerItems() {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<LockerItem> q = s.createNamedQuery("LockerItem.findAll", LockerItem.class);
-        return q.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<LockerItem> q = s.createNamedQuery("LockerItem.findAll", LockerItem.class);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public LockerItem addLockerItem(LockerItem item) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.persist(item);
-        return item;
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.persist(item);
+            return item;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public void updateLockerItem(LockerItem item) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.update(item);
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.update(item);
+        } catch (Exception e) {
+            // Có thể log lỗi ở đây nếu cần
+        }
     }
 
     @Override
     public LockerItem getLockerItemById(Long itemId) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<LockerItem> q = s.createNamedQuery("LockerItem.findByItemId", LockerItem.class);
-        q.setParameter("itemId", itemId);
-        return q.getSingleResult();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<LockerItem> q = s.createNamedQuery("LockerItem.findByItemId", LockerItem.class);
+            q.setParameter("itemId", itemId);
+            return q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<LockerItem> getLockerItemsByResident(User resident) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<LockerItem> q = s.createQuery("FROM LockerItem l WHERE l.residentId = :resident", LockerItem.class);
-        q.setParameter("resident", resident);
-        return q.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<LockerItem> q = s.createQuery("FROM LockerItem l WHERE l.residentId = :resident", LockerItem.class);
+            q.setParameter("resident", resident);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

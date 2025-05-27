@@ -19,14 +19,22 @@ public class FeeTypeRepositoryImpl implements FeeTypeRepository {
 
     @Override
     public FeeType getFeeTypeById(Long id) {
-        Session s = this.factory.getObject().getCurrentSession();
-        return s.get(FeeType.class, id);
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            return s.get(FeeType.class, id);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<FeeType> getAllFeeTypes() {
-        Session s = this.factory.getObject().getCurrentSession();
-        return s.createNamedQuery("FeeType.findAll", FeeType.class)
-                .getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            return s.createNamedQuery("FeeType.findAll", FeeType.class)
+                    .getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -24,42 +24,63 @@ import com.mycompany.repositories.ComplaintRepository;
 @Repository
 @Transactional
 public class ComplaintRepositoryImpl implements ComplaintRepository {
+
     @Autowired
     private LocalSessionFactoryBean factory;
 
     @Override
     public List<Complaint> getAllComplaints() {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<Complaint> q = s.createNamedQuery("Complaint.findAll", Complaint.class);
-        return q.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<Complaint> q = s.createNamedQuery("Complaint.findAll", Complaint.class);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Complaint getComplaintById(Long id) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<Complaint> q = s.createNamedQuery("Complaint.findByComplaintId", Complaint.class);
-        q.setParameter("complaintId", id);
-        return q.getSingleResult();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<Complaint> q = s.createNamedQuery("Complaint.findByComplaintId", Complaint.class);
+            q.setParameter("complaintId", id);
+            return q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<Complaint> getComplaintsByUser(User user) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<Complaint> q = s.createQuery("FROM Complaint c WHERE c.residentId = :user", Complaint.class);
-        q.setParameter("user", user);
-        return q.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<Complaint> q = s.createQuery("FROM Complaint c WHERE c.residentId = :user", Complaint.class);
+            q.setParameter("user", user);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Complaint addComplaint(Complaint complaint) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.persist(complaint);
-        return complaint;
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.persist(complaint);
+            return complaint;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public void updateComplaint(Complaint complaint) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.update(complaint);
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.update(complaint);
+        } catch (Exception e) {
+            // Có thể log lỗi ở đây nếu cần
+        }
     }
 }

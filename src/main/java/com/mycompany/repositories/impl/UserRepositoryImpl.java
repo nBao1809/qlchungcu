@@ -32,51 +32,74 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getUserByUsername(String username) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query q = s.createNamedQuery("User.findByUsername", User.class);
-        q.setParameter("username", username);
-
-        return (User) q.getSingleResult();
-
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query q = s.createNamedQuery("User.findByUsername", User.class);
+            q.setParameter("username", username);
+            return (User) q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public User addUser(User u) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.persist(u);
-
-        return u;
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.persist(u);
+            return u;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public boolean authenticate(String username, String password) {
-        User u = this.getUserByUsername(username);
-
-        return this.passwordEncoder.matches(password, u.getPassword());
+        try {
+            User u = this.getUserByUsername(username);
+            if (u != null) {
+                return this.passwordEncoder.matches(password, u.getPassword());
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public void updateUser(User u) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.update(u);
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.update(u);
+        } catch (Exception e) {
+            // Có thể log lỗi ở đây nếu cần
+        }
     }
 
     @Override
     public List<User> getUsersByRole(String role) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query q;
-        if (role != null && !role.isEmpty())
-            q = s.createNamedQuery("User.findByRole", User.class).setParameter("role", role);
-        else
-            q = s.createQuery("FROM User", User.class);
-        return q.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query q;
+            if (role != null && !role.isEmpty())
+                q = s.createNamedQuery("User.findByRole", User.class).setParameter("role", role);
+            else
+                q = s.createQuery("FROM User", User.class);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public User getUserById(Long id) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query q = s.createNamedQuery("User.findById", User.class);
-        q.setParameter("id", id);
-        return (User) q.getSingleResult();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query q = s.createNamedQuery("User.findById", User.class);
+            q.setParameter("id", id);
+            return (User) q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

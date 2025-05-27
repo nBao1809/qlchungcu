@@ -24,38 +24,58 @@ public class ApartmentRepositoryImpl implements ApartmentRepository {
 
     @Override
     public List<Apartment> getAllApartments() {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<Apartment> q = s.createNamedQuery("Apartment.findAll", Apartment.class);
-        return q.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<Apartment> q = s.createNamedQuery("Apartment.findAll", Apartment.class);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Apartment addApartment(Apartment a) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.persist(a);
-        return a;
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.persist(a);
+            return a;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public void updateApartment(Apartment a) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.update(a);
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.update(a);
+        } catch (Exception e) {
+            // Có thể log lỗi ở đây nếu cần
+        }
     }
 
     @Override
     public Apartment getApartmentById(Long apartmentId) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<Apartment> q = s.createNamedQuery("Apartment.findByApartmentId", Apartment.class);
-        q.setParameter("apartmentId", apartmentId);
-        return q.getSingleResult();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<Apartment> q = s.createNamedQuery("Apartment.findByApartmentId", Apartment.class);
+            q.setParameter("apartmentId", apartmentId);
+            return q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<User> getResidentsOfApartment(Long apartmentId) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query q = s.createQuery(
-            "SELECT u FROM User u JOIN u.apartments a WHERE a.id = :apartmentId", User.class);
-        q.setParameter("apartmentId", apartmentId);
-        return q.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query q = s.createQuery(
+                "SELECT u FROM User u JOIN u.apartments a WHERE a.id = :apartmentId", User.class);
+            q.setParameter("apartmentId", apartmentId);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -19,16 +19,24 @@ public class BillDetailRepositoryImpl implements BillDetailRepository {
 
     @Override
     public BillDetail addBillDetail(BillDetail detail) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.persist(detail);
-        return detail;
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.persist(detail);
+            return detail;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<BillDetail> getBillDetailsByBillId(Long billId) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query q=s.createQuery("FROM BillDetail bd WHERE bd.bill.billId = :billId", BillDetail.class);
-        q.setParameter("billId", billId);
-        return q.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<BillDetail> q = s.createQuery("FROM BillDetail bd WHERE bd.bill.billId = :billId", BillDetail.class);
+            q.setParameter("billId", billId);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

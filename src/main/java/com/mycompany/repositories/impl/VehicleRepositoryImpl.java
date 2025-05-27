@@ -26,39 +26,59 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 
     @Override
     public List<Vehicle> getAllVehicles() {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<Vehicle> q = s.createNamedQuery("Vehicle.findAll", Vehicle.class);
-        return q.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<Vehicle> q = s.createNamedQuery("Vehicle.findAll", Vehicle.class);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<Vehicle> getVehiclesOfUserAndRelatives(User user) {
-        Session s = this.factory.getObject().getCurrentSession();
-        // Lấy phương tiện của cư dân và người thân của họ
-        Query q = s.createQuery(
-            "FROM Vehicle v WHERE v.residentId = :user OR v.relativeId.residentId = :user", Vehicle.class);
-        q.setParameter("user", user);
-        return q.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            // Lấy phương tiện của cư dân và người thân của họ
+            Query q = s.createQuery(
+                "FROM Vehicle v WHERE v.residentId = :user OR v.relativeId.residentId = :user", Vehicle.class);
+            q.setParameter("user", user);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Vehicle addVehicle(Vehicle v) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.persist(v);
-        return v;
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.persist(v);
+            return v;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public void updateVehicle(Vehicle v) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.update(v);
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.update(v);
+        } catch (Exception e) {
+            // Có thể log lỗi ở đây nếu cần
+        }
     }
 
     @Override
     public Vehicle getVehicleById(Long id) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<Vehicle> q = s.createNamedQuery("Vehicle.findByVehicleId", Vehicle.class);
-        q.setParameter("vehicleId", id);
-        return q.getSingleResult();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<Vehicle> q = s.createNamedQuery("Vehicle.findByVehicleId", Vehicle.class);
+            q.setParameter("vehicleId", id);
+            return q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -28,50 +28,70 @@ public class BillRepositoryImpl implements BillRepository {
 
     @Override
     public List<Bill> getAllBills() {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query query = s.createNamedQuery("Bill.findAll", Bill.class);
-        return query.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query query = s.createNamedQuery("Bill.findAll", Bill.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Bill addBill(Bill bill) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.persist(bill);
-        return bill;
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.persist(bill);
+            return bill;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Bill getBillById(Long billId) {
-        Session s = this.factory.getObject().getCurrentSession();
         try {
+            Session s = this.factory.getObject().getCurrentSession();
             Query query = s.createNamedQuery("Bill.findByBillId", Bill.class);
             query.setParameter("billId", billId);
             return (Bill) query.getSingleResult();
-        } catch (Exception ex) {
+        } catch (Exception e) {
             return null;
         }
     }
 
     @Override
     public void updateBill(Bill bill) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.update(bill);
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            s.update(bill);
+        } catch (Exception e) {
+            // Có thể log lỗi ở đây nếu cần
+        }
     }
 
     @Override
     public List<Bill> getBillsByResident(User user) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<Bill> q = s.createQuery("FROM Bill b WHERE b.paidByResidentId = :user", Bill.class);
-        q.setParameter("user", user);
-        return q.getResultList();
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<Bill> q = s.createQuery("FROM Bill b WHERE b.paidByResidentId = :user", Bill.class);
+            q.setParameter("user", user);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Bill getBillByIdAndResident(Long billId, User user) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query<Bill> q = s.createQuery("FROM Bill b WHERE b.billId = :billId AND b.paidByResidentId = :user", Bill.class);
-        q.setParameter("billId", billId);
-        q.setParameter("user", user);
-        return q.getResultStream().findFirst().orElse(null);
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+            Query<Bill> q = s.createQuery("FROM Bill b WHERE b.billId = :billId AND b.paidByResidentId = :user", Bill.class);
+            q.setParameter("billId", billId);
+            q.setParameter("user", user);
+            return q.getResultStream().findFirst().orElse(null);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

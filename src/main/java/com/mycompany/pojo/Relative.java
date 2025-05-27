@@ -25,6 +25,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 /**
@@ -44,51 +45,64 @@ import jakarta.validation.constraints.Size;
     @NamedQuery(name = "Relative.findByHasVehicleCard", query = "SELECT r FROM Relative r WHERE r.hasVehicleCard = :hasVehicleCard"),
     @NamedQuery(name = "Relative.findByCreatedAt", query = "SELECT r FROM Relative r WHERE r.createdAt = :createdAt"),
     @NamedQuery(name = "Relative.findByUpdatedAt", query = "SELECT r FROM Relative r WHERE r.updatedAt = :updatedAt"),
-    @NamedQuery(name = "Relative.findByStatus", query = "SELECT r FROM Relative r WHERE r.status = :status")})
+    @NamedQuery(name = "Relative.findByStatus", query = "SELECT r FROM Relative r WHERE r.status = :status"),
+    @NamedQuery(name = "Relative.findByResidentId", query = "SELECT r FROM Relative r WHERE r.residentId.id = :residentId")})
 public class Relative implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "relative_id")
     private Long relativeId;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotNull(message = "Full name is required")
+    @Size(min = 1, max = 100, message = "Full name must be between 1 and 100 characters")
     @Column(name = "full_name")
     private String fullName;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @NotNull(message = "Relationship is required")
+    @Size(min = 1, max = 50, message = "Relationship must be between 1 and 50 characters")
     @Column(name = "relationship")
     private String relationship;
+
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
+    @NotNull(message = "Phone number is required")
+    @Pattern(regexp = "^\\d{10}$", message = "Phone number must be 10 digits")
     @Column(name = "phone")
     private String phone;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
+    @NotNull(message = "CCCD is required")
+    @Pattern(regexp = "^\\d{12}$", message = "CCCD must be 12 digits")
     @Column(name = "cccd")
     private String cccd;
+
     @Column(name = "has_access_card")
-    private Boolean hasAccessCard;
-    @Column(name = "has_vehicle_card")
-    private Boolean hasVehicleCard;
+    private Boolean hasAccessCard = false;
+
+    @Column(name = "has_vehicle_card") 
+    private Boolean hasVehicleCard = false;
+
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private Date createdAt = new Date();
+
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    private Date updatedAt = new Date();
+
     @Column(name = "status")
-    private Boolean status;
+    private Boolean status = true;
+
     @JsonIgnore
     @OneToMany(mappedBy = "relativeId")
     private Collection<Vehicle> vehicleCollection;
+
     @JoinColumn(name = "resident_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     @JsonIgnore

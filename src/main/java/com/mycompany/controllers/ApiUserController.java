@@ -103,11 +103,9 @@ public class ApiUserController {
     }
 
     // Đăng ký user do admin thực hiện (tạo user cư dân hoặc admin)
-    @PostMapping(path = "/admin/users",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createAdminUser(@RequestParam Map<String, String> params, @RequestParam(value = "avatar", required = false) MultipartFile avatar) {
-        return new ResponseEntity<>(this.userDetailsService.addUser(params, avatar), HttpStatus.CREATED);
+    @PostMapping(path = "/admin/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> createAdminUser(@RequestBody Map<String, String> params) {
+        return new ResponseEntity<>(this.userDetailsService.addUser(params, null), HttpStatus.CREATED);
     }
 
     // Cập nhật thông tin người dùng

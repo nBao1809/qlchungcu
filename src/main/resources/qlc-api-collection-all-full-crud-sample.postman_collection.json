@@ -20,6 +20,27 @@
   ],
   "item": [
     {
+      "name": "User - Đăng nhập",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "username", "value": "testuser", "type": "text" },
+            { "key": "password", "value": "test123", "type": "text" }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/login",
+          "host": ["{{base_url}}"],
+          "path": ["login"]
+        }
+      }
+    },
+    {
       "name": "Admin - Đăng nhập",
       "request": {
         "method": "POST",
@@ -31,27 +52,6 @@
           "urlencoded": [
             { "key": "username", "value": "adminuser", "type": "text" },
             { "key": "password", "value": "admin123", "type": "text" }
-          ]
-        },
-        "url": {
-          "raw": "{{base_url}}/login",
-          "host": ["{{base_url}}"],
-          "path": ["login"]
-        }
-      }
-    },
-    {
-      "name": "User - Đăng nhập",
-      "request": {
-        "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
-        ],
-        "body": {
-          "mode": "urlencoded",
-          "urlencoded": [
-            { "key": "username", "value": "resident1", "type": "text" },
-            { "key": "password", "value": "123456", "type": "text" }
           ]
         },
         "url": {
@@ -177,7 +177,7 @@
       "request": {
         "method": "GET",
         "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
-        "url": { "raw": "{{base_url}}/users/vehicles/{{vehicle_id}}", "host": ["{{base_url}}"], "path": ["users", "vehicles", "{{vehicle_id}}"] }
+        "url": { "raw": "{{base_url}}/users/vehicles/1", "host": ["{{base_url}}"], "path": ["users", "vehicles", "1"] }
       }
     },
     {
@@ -211,7 +211,7 @@
       "request": {
         "method": "GET",
         "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
-        "url": { "raw": "{{base_url}}/users/relatives/{{relative_id}}", "host": ["{{base_url}}"], "path": ["users", "relatives", "{{relative_id}}"] }
+        "url": { "raw": "{{base_url}}/users/relatives/1", "host": ["{{base_url}}"], "path": ["users", "relatives", "1"] }
       }
     },
     {
@@ -245,7 +245,7 @@
       "request": {
         "method": "GET",
         "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
-        "url": { "raw": "{{base_url}}/users/locker-items/{{locker_id}}", "host": ["{{base_url}}"], "path": ["users", "locker-items", "{{locker_id}}"] }
+        "url": { "raw": "{{base_url}}/users/locker-items/1", "host": ["{{base_url}}"], "path": ["users", "locker-items", "1"] }
       }
     },
     {
@@ -283,7 +283,7 @@
       "request": {
         "method": "GET",
         "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
-        "url": { "raw": "{{base_url}}/users/complaints/{{complaint_id}}", "host": ["{{base_url}}"], "path": ["users", "complaints", "{{complaint_id}}"] }
+        "url": { "raw": "{{base_url}}/users/complaints/1", "host": ["{{base_url}}"], "path": ["users", "complaints", "1"] }
       }
     },
     {
@@ -316,7 +316,7 @@
       "request": {
         "method": "GET",
         "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
-        "url": { "raw": "{{base_url}}/users/surveys/{{survey_id}}", "host": ["{{base_url}}"], "path": ["users", "surveys", "{{survey_id}}"] }
+        "url": { "raw": "{{base_url}}/users/surveys/1", "host": ["{{base_url}}"], "path": ["users", "surveys", "1"] }
       }
     },
     {
@@ -341,7 +341,7 @@
       "request": {
         "method": "GET",
         "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
-        "url": { "raw": "{{base_url}}/users/bills/{{bill_id}}", "host": ["{{base_url}}"], "path": ["users", "bills", "{{bill_id}}"] }
+        "url": { "raw": "{{base_url}}/users/bills/1", "host": ["{{base_url}}"], "path": ["users", "bills", "1"] }
       }
     },
     {
@@ -362,6 +362,20 @@
           { "key": "file", "type": "file" }
         ] },
         "url": { "raw": "{{base_url}}/users/bills/{{bill_id}}/payment-proof", "host": ["{{base_url}}"], "path": ["users", "bills", "{{bill_id}}", "payment-proof"] }
+      }
+    },
+    {
+      "name": "User - Lấy profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/auth/profile",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "profile"]
+        }
       }
     }
   ]
