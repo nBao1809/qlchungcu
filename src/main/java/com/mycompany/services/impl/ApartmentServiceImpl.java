@@ -27,12 +27,12 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Override
     public Apartment addApartment(Map<String, String> params) {
         Apartment a = new Apartment();
-        a.setApartmentCode(params.get("apartmentCode"));
-        a.setBlock(params.get("block"));
+        a.setApartmentCode(params.get("apartmentCode"));        a.setBlock(params.get("block"));
         if (params.get("floor") != null)
             a.setFloor(Integer.parseInt(params.get("floor")));
         a.setStatus(params.get("status"));
-        // ... các trường khác nếu có ...
+    
+        
         return apartmentRepo.addApartment(a);
     }
 

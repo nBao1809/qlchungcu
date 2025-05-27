@@ -8,7 +8,10 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
@@ -35,6 +38,7 @@ import jakarta.validation.constraints.Size;
  */
 @Entity
 @Table(name = "survey")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "surveyId")
 @NamedQueries({
     @NamedQuery(name = "Survey.findAll", query = "SELECT s FROM Survey s"),
     @NamedQuery(name = "Survey.findBySurveyId", query = "SELECT s FROM Survey s WHERE s.surveyId = :surveyId"),
@@ -76,10 +80,11 @@ public class Survey implements Serializable {
     @Size(max = 20)
     @Column(name = "status")
     private String status;
-    @JsonIgnore
+    @JsonIgnore    @JsonManagedReference("survey-questions")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "surveyId")
     private Collection<SurveyQuestion> surveyQuestionCollection;
-    @JsonIgnore
+
+    @JsonManagedReference("survey-responses")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "surveyId")
     private Collection<SurveyResponse> surveyResponseCollection;
     @JsonIgnore

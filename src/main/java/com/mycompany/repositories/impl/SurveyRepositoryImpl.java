@@ -23,30 +23,27 @@ import com.mycompany.repositories.SurveyRepository;
 public class SurveyRepositoryImpl implements SurveyRepository {
 
     @Autowired
-    private LocalSessionFactoryBean factory;
-
-    @Override
+    private LocalSessionFactoryBean factory;    @Override
     public List<Survey> getAllSurveys() {
         try {
             Session session = this.factory.getObject().getCurrentSession();
-            return session.createNamedQuery("Survey.findAll", Survey.class).getResultList();
+            List<Survey> surveys = session.createNamedQuery("Survey.findAll", Survey.class).getResultList();
+            return surveys != null ? surveys : new ArrayList<>();
         } catch (Exception e) {
-            return null;
+            e.printStackTrace(); // Log the exception for debugging
+            return new ArrayList<>(); // Return empty list instead of null
         }
-    }
-
-    @Override
+    }    @Override
     public Survey addSurvey(Survey survey) {
         try {
             Session session = this.factory.getObject().getCurrentSession();
             session.save(survey);
             return survey;
         } catch (Exception e) {
-            return null;
+            e.printStackTrace(); // Log the exception
+            throw new RuntimeException("Failed to add survey", e);
         }
-    }
-
-    @Override
+    }    @Override
     public Survey updateSurveyStatus(Long surveyId, Map<String, String> params) {
         try {
             Session session = this.factory.getObject().getCurrentSession();
@@ -59,15 +56,17 @@ public class SurveyRepositoryImpl implements SurveyRepository {
             }
             return s;
         } catch (Exception e) {
-            return null;
+            e.printStackTrace(); // Log the exception
+            throw new RuntimeException("Failed to update survey status", e);
         }
-    }
-
-    @Override
+    }    @Override
     public Map<String, Object> getSurveyDetail(Long surveyId) {
         try {
             Session session = this.factory.getObject().getCurrentSession();
             Survey s = session.get(Survey.class, surveyId);
+            if (s == null) {
+                throw new RuntimeException("Survey not found with id: " + surveyId);
+            }
             // Lấy câu hỏi và lựa chọn
             List<SurveyQuestion> questions = session.createQuery(
                     "FROM SurveyQuestion WHERE surveyId.surveyId = :sid ORDER BY orderNumber ASC", SurveyQuestion.class)
@@ -80,7 +79,8 @@ public class SurveyRepositoryImpl implements SurveyRepository {
             }
             return Map.of("survey", s, "questions", questions);
         } catch (Exception e) {
-            return null;
+            e.printStackTrace(); // Log the exception
+            throw new RuntimeException("Failed to get survey details", e);
         }
     }
 
@@ -132,31 +132,48 @@ public class SurveyRepositoryImpl implements SurveyRepository {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    @Override
+    }    @Override
     public List<Survey> getAvailableSurveysForUser() {
-        Session session = this.factory.getObject().getCurrentSession();
-        return session.createQuery("FROM Survey WHERE status = 'ACTIVE'", Survey.class).getResultList();
+        try {
+            Session session = this.factory.getObject().getCurrentSession();
+            List<Survey> surveys = session.createQuery("FROM Survey WHERE status = 'ACTIVE'", Survey.class).getResultList(); 
+            return surveys != null ? surveys : new ArrayList<>();
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
+            throw new RuntimeException("Failed to get available surveys", e);
+        }
     }
 
     @Override
     public Map<String, Object> getSurveyDetailForUser(Long surveyId) {
-        return getSurveyDetail(surveyId);
-    }
-
-    @Override
+        try {
+            return getSurveyDetail(surveyId);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
+            throw new RuntimeException("Failed to get survey details for user", e);
+        }
+    }    @Override
     public boolean respondSurvey(Long surveyId, Long userId, SurveyResponse response) {
-        Session session = this.factory.getObject().getCurrentSession();
-        User u = session.get(User.class, userId);
-        // Kiểm tra đã tồn tại phản hồi chưa (1 user chỉ được trả lời 1 lần)
-        Long count = session.createQuery(
-            "SELECT COUNT(r) FROM SurveyResponse r WHERE r.surveyId.surveyId = :sid AND r.residentId.id = :uid", Long.class)
-            .setParameter("sid", surveyId)
-            .setParameter("uid", u.getId())
-            .uniqueResult();
-        if (count != null && count > 0) return false;
-        session.save(response);
-        return true;
+        try {
+            Session session = this.factory.getObject().getCurrentSession();
+            User u = session.get(User.class, userId);
+            if (u == null) {
+                throw new RuntimeException("User not found with id: " + userId);
+            }
+            // Kiểm tra đã tồn tại phản hồi chưa (1 user chỉ được trả lời 1 lần)
+            Long count = session.createQuery(
+                "SELECT COUNT(r) FROM SurveyResponse r WHERE r.surveyId.surveyId = :sid AND r.residentId.id = :uid", Long.class)
+                .setParameter("sid", surveyId)
+                .setParameter("uid", u.getId())
+                .uniqueResult();
+            if (count != null && count > 0) {
+                return false;
+            }
+            session.save(response);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
+            throw new RuntimeException("Failed to submit survey response", e);
+        }
     }
 }

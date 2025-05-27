@@ -4,7 +4,6 @@
  */
 package com.mycompany.configs;
 
-import com.cloudinary.Cloudinary;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +29,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 })
 public class WebAppContextConfigs implements WebMvcConfigurer {
 
+    @Bean
+    public StandardServletMultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
+    }
+    
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();

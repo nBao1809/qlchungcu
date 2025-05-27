@@ -4,6 +4,8 @@
  */
 package com.mycompany.controllers;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.pojo.Bill;
 import com.mycompany.pojo.BillDetail;
 import com.mycompany.pojo.FeeType;
@@ -53,10 +56,63 @@ public class ApiBillController {
     }
 
     // POST /api/admin/bills - Tạo hóa đơn mới cho căn hộ
-    @PostMapping("/admin/bills")
-    public ResponseEntity<Bill> createBill(@RequestBody Map<String, String> params) {
+    @PostMapping("/admin/bills") 
+    public ResponseEntity<?> createBill(@RequestBody Map<String, String> params) {
+        // Validate required fields
+        if (!params.containsKey("month") || !params.containsKey("year") || !params.containsKey("apartment_id")) {
+            return ResponseEntity.badRequest().body("Thiếu thông tin bắt buộc: month, year, apartment_id");
+        }
+
+        // Validate month and year
+        try {
+            short month = Short.parseShort(params.get("month"));
+            if (month < 1 || month > 12) {
+                return ResponseEntity.badRequest().body("Tháng không hợp lệ (1-12)");
+            }
+            
+            int year = Integer.parseInt(params.get("year"));
+            if (year < 2000) {
+                return ResponseEntity.badRequest().body("Năm không hợp lệ (>= 2000)");
+            }
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Tháng/năm phải là số");
+        }
+
+        // Validate bill details
+        if (!params.containsKey("bill_details")) {
+            return ResponseEntity.badRequest().body("Thiếu chi tiết hóa đơn (bill_details)");
+        }
+        
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            List<Map<String, Object>> details = mapper.readValue(params.get("bill_details"), 
+                mapper.getTypeFactory().constructCollectionType(List.class, Map.class));
+            
+            if (details.isEmpty()) {
+                return ResponseEntity.badRequest().body("Chi tiết hóa đơn không được rỗng");
+            }
+
+            // Validate each detail
+            for (Map<String, Object> detail : details) {
+                if (!detail.containsKey("fee_type_id") || !detail.containsKey("quantity") || !detail.containsKey("unit_price")) {
+                    return ResponseEntity.badRequest().body("Mỗi chi tiết phải có: fee_type_id, quantity, unit_price");
+                }
+                try {
+                    new BigDecimal(detail.get("quantity").toString());
+                    new BigDecimal(detail.get("unit_price").toString());
+                } catch (NumberFormatException | NullPointerException e) {
+                    return ResponseEntity.badRequest().body("Số lượng và đơn giá phải là số");
+                }
+            }
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body("Chi tiết hóa đơn không đúng định dạng JSON");
+        }
+
         Bill bill = billService.createBill(params);
-        return new ResponseEntity<>(bill, HttpStatus.CREATED);
+        if (bill != null) {
+            return ResponseEntity.ok(bill);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Không thể tạo hóa đơn");
     }
 
     // GET /api/admin/bills/{billId} - Chi tiết hóa đơn
@@ -72,7 +128,7 @@ public class ApiBillController {
     // PUT /api/admin/bills/{billId}/confirm-payment - Xác nhận hoặc từ chối thanh toán
     @PutMapping("/admin/bills/{billId}/confirm-payment")
     public ResponseEntity<?> confirmPayment(@PathVariable("billId") Long billId, @RequestBody Map<String, String> params) {
-        boolean result = billService.confirmPayment(billId, params.get("status")); // status: CONFIRMED/REJECTED
+        boolean result = billService.confirmPayment(billId, params.get("status")); // status: PAID/UNPAID
         if (result) {
             return ResponseEntity.ok("Cập nhật trạng thái thanh toán thành công");
         }

@@ -50,7 +50,7 @@ public class QuestionOption implements Serializable {
     @Column(name = "option_text")
     private String optionText;
     @Column(name = "order_number")
-    private Integer orderNumber;
+    private Integer orderNumber;    @JsonIgnore
     @JoinColumn(name = "question_id", referencedColumnName = "question_id")
     @ManyToOne(optional = false)
     private SurveyQuestion questionId;

@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.pojo.User;
-import com.mycompany.services.BillService;
 import com.mycompany.services.UserService;
 import com.mycompany.utils.JwtUtils;
 
@@ -42,8 +41,6 @@ public class ApiUserController {
     @Autowired
     private UserService userDetailsService;
 
-    @Autowired
-    private BillService billService;
 
     // @PostMapping(path = "/users",
     //         consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
@@ -103,7 +100,7 @@ public class ApiUserController {
     }
 
     // Đăng ký user do admin thực hiện (tạo user cư dân hoặc admin)
-    @PostMapping(path = "/admin/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/admin/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createAdminUser(@RequestBody Map<String, String> params) {
         return new ResponseEntity<>(this.userDetailsService.addUser(params, null), HttpStatus.CREATED);
     }

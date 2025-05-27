@@ -53,7 +53,9 @@ public class ApiComplaintController {
         User admin = userService.getUserByUsername(principal.getName());
         complaintService.updateComplaintStatus(id, params.get("status"), admin);
         return ResponseEntity.ok("Cập nhật trạng thái thành công");
-    }    // GET /api/users/complaints/{id}
+    }
+
+    // GET /api/users/complaints/{id}
     @GetMapping("/users/complaints/{id}")
     public ResponseEntity<Complaint> getComplaintDetail(@PathVariable("id") Long id, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());

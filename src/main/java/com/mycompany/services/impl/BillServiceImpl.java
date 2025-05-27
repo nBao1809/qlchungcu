@@ -58,7 +58,11 @@ public class BillServiceImpl implements BillService {
     public Bill createBill(Map<String, String> params) {
         Bill bill = new Bill();
         bill.setPaymentStatus("UNPAID");
-        bill.setCreatedAt(new Date());
+        
+        // Set timestamps
+        Date now = new Date();
+        bill.setCreatedAt(now);
+        bill.setUpdatedAt(now);
 
         if (params.containsKey("month")) {
             bill.setMonth(Short.parseShort(params.get("month")));
@@ -116,7 +120,14 @@ public class BillServiceImpl implements BillService {
     public boolean confirmPayment(Long billId, String status) {
         Bill bill = billRepo.getBillById(billId);
         if (bill == null) return false;
-        bill.setPaymentStatus(status); // "CONFIRMED" hoặc "REJECTED"
+        
+        // Only allow valid payment status
+        if (!"PAID".equals(status) && !"REJECTED".equals(status)) {
+            return false;
+        }
+        
+        bill.setPaymentStatus(status);
+        bill.setUpdatedAt(new Date());
         billRepo.updateBill(bill);
         return true;
     }

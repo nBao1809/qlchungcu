@@ -26,6 +26,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.mycompany.pojo.User;
 import com.mycompany.repositories.UserRepository;
 import com.mycompany.services.UserService;
+import java.util.Date;
 
 /**
  *
@@ -67,9 +68,13 @@ public class UserServiceImpl implements UserService {
         u.setEmail(params.get("email"));
         u.setPhone(params.get("phone"));
         u.setUsername(params.get("username"));
-        u.setPassword(this.passwordEncoder.encode(params.get("password")));
-        u.setRole(params.get("role"));
+        u.setPassword(this.passwordEncoder.encode(params.get("password")));        u.setRole(params.get("role"));
         u.setStatus("ACTIVE");
+        
+        // Set timestamps
+        Date now = new Date();
+        u.setCreatedAt(now);
+        u.setUpdatedAt(now);
 
         if (avatar != null && !avatar.isEmpty()) {
             try {
@@ -115,11 +120,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUserInfo(Long userId, Map<String, String> params) {
         User u = this.userRepo.getUserById(userId);
-        if (u == null) return null;
-        if (params.containsKey("fullName")) u.setFullName(params.get("fullName"));
+        if (u == null) return null;        if (params.containsKey("fullName")) u.setFullName(params.get("fullName"));
         if (params.containsKey("email")) u.setEmail(params.get("email"));
         if (params.containsKey("phone")) u.setPhone(params.get("phone"));
         if (params.containsKey("role")) u.setRole(params.get("role"));
+        
+        // Update timestamp
+        u.setUpdatedAt(new Date());
+        
         this.userRepo.updateUser(u);
         return u;
     }

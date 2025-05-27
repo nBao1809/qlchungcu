@@ -4,7 +4,6 @@ C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\configs\SpringSecurityConfigs.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\configs\ThymeleafConfig.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\configs\WebAppContextConfigs.java
-C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\constants\SurveyStatus.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiApartmentController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiBillController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiComplaintController.java
@@ -15,6 +14,11 @@ C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiUserSurveyController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiVehicleController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\UserController.java
+C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\dto\QuestionOptionDTO.java
+C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\dto\ResponseDetailDTO.java
+C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\dto\SurveyDTO.java
+C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\dto\SurveyQuestionDTO.java
+C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\dto\SurveyResponseDTO.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\filters\JwtFilter.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\pojo\Apartment.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\pojo\Bill.java
@@ -74,3 +78,4 @@ C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\services\UserService.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\services\VehicleService.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\utils\JwtUtils.java
+C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\utils\SurveyMapper.java

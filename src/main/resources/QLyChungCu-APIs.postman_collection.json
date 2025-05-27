@@ -13,12 +13,12 @@
 		},
 		{
 			"key": "userToken",
-			"value": "",
+			"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJSRVNJREVOVCIsImV4cCI6MTc0ODQ1MDA5OCwiaWF0IjoxNzQ4MzYzNjk4fQ.P5rqEo5EX2cczU8_ZpR-hwjogx42eIgOSe_3OlQ7-0w",
 			"type": "string"
 		},
 		{
 			"key": "adminToken",
-			"value": "",
+			"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnVzZXIiLCJyb2xlIjoiQURNSU4iLCJleHAiOjE3NDg0NTAwODUsImlhdCI6MTc0ODM2MzY4NX0.xIiWYMfbklUp0-v2_LaBPmDVGfOLddzH48T6M26uq2k",
 			"type": "string"
 		}
 	],
@@ -105,8 +105,7 @@
 						}
 					}
 				},
-				{
-					"name": "Create User (Admin)", 
+				{                    "name": "Create User (Admin)", 
 					"request": {
 						"method": "POST",
 						"header": [
@@ -114,47 +113,21 @@
 								"key": "Authorization",
 								"value": "Bearer {{adminToken}}",
 								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "newuser",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "pass123",
-									"type": "text"
-								},
-								{
-									"key": "fullName", 
-									"value": "New User",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "user@example.com",
-									"type": "text"
-								},
-								{
-									"key": "phone",
-									"value": "0123456789",
-									"type": "text"
-								},
-								{
-									"key": "role",
-									"value": "RESIDENT",
-									"type": "text"
-								},
-								{
-									"key": "avatar",
-									"type": "file",
-									"src": []
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"newuser\",\n    \"password\": \"pass123\",\n    \"fullName\": \"New User\",\n    \"email\": \"user@example.com\",\n    \"phone\": \"0123456789\",\n    \"role\": \"RESIDENT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/admin/users",
@@ -409,9 +382,7 @@
 							"path": ["api", "admin", "vehicles"]
 						}
 					}
-				},
-                {
-					"name": "Register Vehicle For Relative",
+				},                {					"name": "Register Vehicle For Relative",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -419,9 +390,18 @@
 								"key": "Authorization", 
 								"value": "Bearer {{userToken}}",
 								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
-						],
-						"body": {
+						],						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"licensePlate\": \"51F1-23456\",\n    \"vehicleType\": \"MOTORBIKE\"\n}",
 							"options": {
@@ -496,8 +476,7 @@
 							"path": ["api", "admin", "bills", "1"]
 						}
 					}
-				},
-				{
+				},				{
 					"name": "Confirm Payment (Admin)",
 					"request": {
 						"method": "PUT",
@@ -506,8 +485,22 @@
 								"key": "Authorization",
 								"value": "Bearer {{adminToken}}",
 								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"PAID\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{baseUrl}}/api/admin/bills/1/confirm-payment",
 							"host": ["{{baseUrl}}"],
@@ -561,10 +554,9 @@
 								"value": "Bearer {{adminToken}}",
 								"type": "text"
 							}
-						],
-						"body": {
+						],						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"apartmentId\": 1,\n    \"month\": 5,\n    \"year\": 2025,\n    \"details\": [\n        {\n            \"feeTypeId\": 1,\n            \"quantity\": 100,\n            \"unitPrice\": 3500,\n            \"note\": \"Tiền điện tháng 5\"\n        },\n        {\n            \"feeTypeId\": 2,\n            \"quantity\": 15,\n            \"unitPrice\": 25000,\n            \"note\": \"Tiền nước tháng 5\"\n        }\n    ]\n}",
+							"raw": "{\n    \"month\": 5,\n    \"year\": 2025,\n    \"apartment_id\": 1,\n    \"bill_details\": [\n        {\n            \"fee_type_id\": 1,\n            \"quantity\": 100,\n            \"unit_price\": 3500,\n            \"note\": \"Tiền điện tháng 5\"\n        },\n        {\n            \"fee_type_id\": 2,\n            \"quantity\": 15,\n            \"unit_price\": 25000,\n            \"note\": \"Tiền nước tháng 5\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"

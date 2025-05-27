@@ -7,7 +7,10 @@ package com.mycompany.pojo;
 import java.io.Serializable;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
@@ -32,6 +35,7 @@ import jakarta.validation.constraints.Size;
  */
 @Entity
 @Table(name = "survey_question")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "questionId")
 @NamedQueries({
     @NamedQuery(name = "SurveyQuestion.findAll", query = "SELECT s FROM SurveyQuestion s"),
     @NamedQuery(name = "SurveyQuestion.findByQuestionId", query = "SELECT s FROM SurveyQuestion s WHERE s.questionId = :questionId"),
@@ -60,7 +64,7 @@ public class SurveyQuestion implements Serializable {
     @Column(name = "required")
     private Boolean required;
     @Column(name = "order_number")
-    private Integer orderNumber;
+    private Integer orderNumber;    @JsonBackReference("survey-questions")
     @JoinColumn(name = "survey_id", referencedColumnName = "survey_id")
     @ManyToOne(optional = false)
     private Survey surveyId;

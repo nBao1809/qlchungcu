@@ -12,7 +12,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +39,6 @@ public class ApiVehicleController {
 
     // Admin APIs
     @GetMapping("/admin/vehicles")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<Vehicle>> getAllVehicles() {
         List<Vehicle> vehicles = vehicleService.getAllVehicles();
         return ResponseEntity.ok(vehicles);
@@ -48,7 +46,6 @@ public class ApiVehicleController {
 
     // User APIs
     @GetMapping("/users/vehicles")
-    @PreAuthorize("hasAuthority('RESIDENT')")
     public ResponseEntity<List<Vehicle>> getUserVehicles(Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
         List<Vehicle> vehicles = vehicleService.getVehiclesOfUserAndRelatives(user);
@@ -56,7 +53,6 @@ public class ApiVehicleController {
     }
 
     @PostMapping("/users/vehicles")
-    @PreAuthorize("hasAuthority('RESIDENT')")
     public ResponseEntity<Vehicle> addVehicle(@RequestBody Map<String, String> params, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
         params.put("residentId", user.getId().toString());
@@ -68,7 +64,6 @@ public class ApiVehicleController {
     }
 
     @PutMapping("/admin/vehicles/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Vehicle> updateVehicle(@PathVariable("id") Long vehicleId, @RequestBody Map<String, String> params) {
         Vehicle updated = vehicleService.updateVehicle(vehicleId, params);
         if (updated != null)
@@ -78,7 +73,6 @@ public class ApiVehicleController {
 
     // API for managing relative's vehicles
     @PostMapping("/users/relatives/{relativeId}/vehicles")
-    @PreAuthorize("hasAuthority('RESIDENT')")
     public ResponseEntity<Vehicle> addVehicleForRelative(
             @PathVariable("relativeId") Long relativeId,
             @RequestBody Map<String, String> params,

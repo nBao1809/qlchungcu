@@ -17,8 +17,10 @@ import com.mycompany.pojo.User;
 import com.mycompany.repositories.SurveyRepository;
 import com.mycompany.repositories.UserRepository;
 import com.mycompany.services.SurveyService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class SurveyServiceImpl implements SurveyService {
     @Autowired
     private SurveyRepository surveyRepo;

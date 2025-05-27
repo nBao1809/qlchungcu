@@ -4,6 +4,7 @@
  */
 
 package com.mycompany.services.impl;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +48,14 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle v = new Vehicle();
         v.setLicensePlate(params.get("licensePlate"));
         v.setVehicleType(params.get("vehicleType"));
-
+        
+        // Set default dates
+        Date now = new Date();
+        v.setCreatedAt(now);
+        v.setUpdatedAt(now);
+        
+        // Set default status to true (will be converted to 1 in database)
+        v.setStatus(true);
     
         if (params.containsKey("relativeId")) {
             Relative relative = relativeRepo.getRelativeById(Long.parseLong(params.get("relativeId")));
@@ -59,8 +67,10 @@ public class VehicleServiceImpl implements VehicleService {
             v.setRelativeId(null);
         }
 
+        // Allow override of default status if specified
         if (params.containsKey("status")) {
-            v.setStatus(Boolean.valueOf(params.get("status")));
+           v.setStatus("true".equalsIgnoreCase(params.get("status")));
+
         }
 
         return vehicleRepo.addVehicle(v);
@@ -78,7 +88,29 @@ public class VehicleServiceImpl implements VehicleService {
         if (params.containsKey("vehicleType")) {
             v.setVehicleType(params.get("vehicleType"));
         }
-        // ... các trường khác nếu có ...
+        if (params.containsKey("relativeId")) {
+            if (params.get("relativeId") != null && !params.get("relativeId").isEmpty()) {
+                Relative relative = relativeRepo.getRelativeById(Long.parseLong(params.get("relativeId")));
+                v.setRelativeId(relative);
+                v.setResidentId(null);
+            } else {
+                v.setRelativeId(null);
+            }
+        }
+        if (params.containsKey("residentId")) {
+            if (params.get("residentId") != null && !params.get("residentId").isEmpty()) {
+                User resident = userRepo.getUserById(Long.parseLong(params.get("residentId")));
+                v.setResidentId(resident);
+                v.setRelativeId(null);
+            } else {
+                v.setResidentId(null);
+            }
+        }
+        if (params.containsKey("status")) {
+            v.setStatus("1".equals(params.get("status")));
+        }
+        // Update the updated_at timestamp
+        v.setUpdatedAt(new Date());
         vehicleRepo.updateVehicle(v);
         return v;
     }
