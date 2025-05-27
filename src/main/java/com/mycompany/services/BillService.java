@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.pojo.Bill;
+import com.mycompany.pojo.BillDetail;
 import com.mycompany.pojo.FeeType;
 import com.mycompany.pojo.User;
 
@@ -22,7 +23,8 @@ import com.mycompany.pojo.User;
 @Service
 public interface BillService {
     List<Bill> getAllBills();
-    Bill createBill(Map<String, String> params);
+    Bill createBill(Map<String, String> params); // Keep for backward compatibility
+    Bill createBill(com.mycompany.dto.CreateBillDTO billDTO); // New method with DTO
     Bill getBillById(Long billId);
     boolean confirmPayment(Long billId, String status);
     List<Bill> getBillsByUser(User user);
@@ -30,4 +32,6 @@ public interface BillService {
     Bill uploadPaymentProof(User user, Long billId, MultipartFile file);
     Bill createOnlinePayment(User user, Long billId, Map<String, String> params);
     public List<FeeType> getAllFeeTypes();
+    List<BillDetail> getBillDetails(Long billId);
+    Bill findByApartmentAndMonthAndYear(Long apartmentId, short month, int year);
 }

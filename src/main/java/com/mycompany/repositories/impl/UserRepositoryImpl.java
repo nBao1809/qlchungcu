@@ -63,15 +63,18 @@ public class UserRepositoryImpl implements UserRepository {
             e.printStackTrace();
             return false;
         }
-    }
-
-    @Override
+    }    @Override
     public void updateUser(User u) {
         try {
             Session s = this.factory.getObject().getCurrentSession();
+            User existingUser = getUserById(u.getId());
+            if (existingUser != null && !existingUser.getPassword().equals(u.getPassword())) {
+                // Nếu mật khẩu thay đổi, đặt hasChangePassword = true
+                u.setPasswordChanged(true);
+            }
             s.update(u);
         } catch (Exception e) {
-            // Có thể log lỗi ở đây nếu cần
+            throw new RuntimeException("Error updating user", e);
         }
     }
 

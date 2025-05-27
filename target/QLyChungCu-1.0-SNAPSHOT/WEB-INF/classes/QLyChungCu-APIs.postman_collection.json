@@ -543,8 +543,7 @@
 							"path": ["api", "users", "bills"]
 						}
 					}
-				},
-				{
+				},				{
 					"name": "Create New Bill (Admin)",
 					"request": {
 						"method": "POST",
@@ -553,11 +552,16 @@
 								"key": "Authorization",
 								"value": "Bearer {{adminToken}}",
 								"type": "text"
+							},
+							{
+								"key": "Content-Type", 
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"apartmentId\": 1,\n    \"month\": 5,\n    \"year\": 2025,\n    \"details\": [\n        {\n            \"feeTypeId\": 1,\n            \"quantity\": 100,\n            \"unitPrice\": 3500,\n            \"note\": \"Tiền điện tháng 5\"\n        },\n        {\n            \"feeTypeId\": 2,\n            \"quantity\": 15,\n            \"unitPrice\": 25000,\n            \"note\": \"Tiền nước tháng 5\"\n        }\n    ]\n}",
+							"raw": "{\n    \"apartment_id\": 5,\n    \"month\": 5,\n    \"year\": 2025,\n    \"bill_details\": [\n        {\n            \"fee_type_id\": 3,\n            \"quantity\": 150,\n            \"unit_price\": 3500,\n            \"note\": \"Tiền điện - Số điện tháng 5\" \n        },\n        {\n            \"fee_type_id\": 4,\n            \"quantity\": 25,\n            \"unit_price\": 25000, \n            \"note\": \"Tiền nước - Số nước tháng 5\"\n        },\n        {\n            \"fee_type_id\": 3,\n            \"quantity\": 1,\n            \"unit_price\": 200000,\n            \"note\": \"Phí dịch vụ chung cư\"\n        },\n        {\n            \"fee_type_id\": 4,\n            \"quantity\": 1,\n            \"unit_price\": 100000,\n            \"note\": \"Phí giữ xe máy\"\n        },\n        {\n            \"fee_type_id\": 4, \n            \"quantity\": 1,\n            \"unit_price\": 150000,\n            \"note\": \"Phí bảo trì chung cư\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"

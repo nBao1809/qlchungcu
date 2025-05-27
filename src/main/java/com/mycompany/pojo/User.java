@@ -129,7 +129,7 @@ public class User implements Serializable {
     private Collection<Survey> surveyCollection;
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<ResidentApartment> residentApartmentCollection;
+    private Collection<ResidentApartment> residentApartmentCollection;    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "residentId")
     private Collection<Relative> relativeCollection;
 

@@ -13,6 +13,7 @@ com\mycompany\repositories\SurveyRepository.class
 com\mycompany\configs\SpringSecurityConfigs.class
 com\mycompany\controllers\ApiVehicleController.class
 com\mycompany\services\SurveyService.class
+com\mycompany\dto\CreateBillDTO.class
 com\mycompany\repositories\impl\ComplaintRepositoryImpl.class
 com\mycompany\services\ComplaintService.class
 com\mycompany\controllers\ApiApartmentController.class
@@ -75,6 +76,7 @@ com\mycompany\repositories\impl\BillDetailRepositoryImpl.class
 com\mycompany\pojo\SurveyQuestion.class
 com\mycompany\dto\SurveyResponseDTO.class
 com\mycompany\configs\DispatcherServletInit.class
+com\mycompany\dto\BillDetailDTO.class
 com\mycompany\pojo\QuestionOption.class
 com\mycompany\pojo\ResidentApartmentPK.class
 com\mycompany\services\ApartmentService.class

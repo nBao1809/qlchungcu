@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudinary.Cloudinary;
@@ -37,13 +38,16 @@ import com.mycompany.services.BillService;
  * @author baoto
  */
 @Service
+@Transactional
 public class BillServiceImpl implements BillService {
+
+    private static final Logger logger = Logger.getLogger(BillServiceImpl.class.getName());
 
     @Autowired
     private BillRepository billRepo;
     @Autowired
     private ApartmentRepository apartmentRepo;
-    @Autowired
+    @Autowired 
     private Cloudinary cloudinary;
 @Autowired
     private FeeTypeRepository feeTypeRepo;
@@ -120,13 +124,7 @@ public class BillServiceImpl implements BillService {
     public boolean confirmPayment(Long billId, String status) {
         Bill bill = billRepo.getBillById(billId);
         if (bill == null) return false;
-        
-        // Only allow valid payment status
-        if (!"PAID".equals(status) && !"REJECTED".equals(status)) {
-            return false;
-        }
-        
-        bill.setPaymentStatus(status);
+        bill.setPaymentStatus(status); // "CONFIRMED" hoặc "REJECTED"
         bill.setUpdatedAt(new Date());
         billRepo.updateBill(bill);
         return true;
@@ -175,5 +173,95 @@ public class BillServiceImpl implements BillService {
     @Override
     public List<FeeType> getAllFeeTypes() {
         return feeTypeRepo.getAllFeeTypes();
+    }
+
+    @Override
+    public Bill createBill(com.mycompany.dto.CreateBillDTO billDTO) {
+        Logger.getLogger(BillServiceImpl.class.getName()).log(Level.INFO, 
+            "Starting bill creation for apartment ID: " + billDTO.getApartmentId());
+            
+        Bill bill = new Bill();
+        bill.setPaymentStatus("UNPAID");
+        
+        // Set timestamps
+        Date now = new Date();
+        bill.setCreatedAt(now);
+        bill.setUpdatedAt(now);
+
+        bill.setMonth(billDTO.getMonth());
+        bill.setYear(billDTO.getYear());
+        // Initialize required totalAmount field with 0
+        bill.setTotalAmount(BigDecimal.ZERO);
+        
+        // Verify apartment exists
+        Apartment apartment = apartmentRepo.getApartmentById(billDTO.getApartmentId());
+        if (apartment == null) {
+            Logger.getLogger(BillServiceImpl.class.getName()).log(Level.SEVERE, 
+                "Cannot create bill - apartment not found: " + billDTO.getApartmentId());
+            return null;
+        }
+        bill.setApartmentId(apartment);
+
+        // Save bill first to get billId
+        bill = billRepo.addBill(bill);
+        if (bill == null) {
+            Logger.getLogger(BillServiceImpl.class.getName()).log(Level.SEVERE, 
+                "Failed to save initial bill state. Check database configuration and connectivity.");
+            return null;
+        }
+
+        Logger.getLogger(BillServiceImpl.class.getName()).log(Level.INFO, 
+            "Created bill with ID: " + bill.getBillId());
+
+        BigDecimal total = BigDecimal.ZERO;
+
+        // Process bill details
+        for (com.mycompany.dto.BillDetailDTO d : billDTO.getBillDetails()) {
+            if (d.getFeeTypeId() == null || d.getQuantity() == null || d.getUnitPrice() == null) {
+                return null;
+            }
+            
+            FeeType feeType = feeTypeRepo.getFeeTypeById(d.getFeeTypeId());
+            if (feeType == null) {
+                return null;
+            }
+
+            BillDetail detail = new BillDetail();
+            detail.setFeeTypeId(feeType);
+            detail.setBillId(bill);
+            detail.setQuantity(d.getQuantity());
+            detail.setUnitPrice(d.getUnitPrice());
+            detail.setAmount(detail.getQuantity().multiply(detail.getUnitPrice()));
+            detail.setNote(d.getNote());
+
+            // Add to total
+            total = total.add(detail.getAmount());
+
+            // Save bill detail
+            BillDetail savedDetail = billDetailRepo.addBillDetail(detail);
+            if (savedDetail == null) {
+                return null;
+            }
+        }
+
+        // Update total amount
+        if (bill == null) {
+            return null;
+        }
+        
+        bill.setTotalAmount(total);
+        billRepo.updateBill(bill);
+
+        return bill;
+    }
+
+    @Override
+    public List<BillDetail> getBillDetails(Long billId) {
+        return billDetailRepo.getBillDetailsByBillId(billId);
+    }
+
+    @Override
+    public Bill findByApartmentAndMonthAndYear(Long apartmentId, short month, int year) {
+        return billRepo.findByApartmentAndMonthAndYear(apartmentId, month, year);
     }
 }

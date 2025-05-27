@@ -15,24 +15,20 @@ import com.mycompany.repositories.BillDetailRepository;
 @Transactional
 public class BillDetailRepositoryImpl implements BillDetailRepository {
     @Autowired
-    private LocalSessionFactoryBean factory;
-
-    @Override
+    private LocalSessionFactoryBean factory;    @Override
     public BillDetail addBillDetail(BillDetail detail) {
         try {
             Session s = this.factory.getObject().getCurrentSession();
             s.persist(detail);
             return detail;
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException("Error saving bill detail", e);
         }
-    }
-
-    @Override
+    }    @Override
     public List<BillDetail> getBillDetailsByBillId(Long billId) {
         try {
             Session s = this.factory.getObject().getCurrentSession();
-            Query<BillDetail> q = s.createQuery("FROM BillDetail bd WHERE bd.bill.billId = :billId", BillDetail.class);
+            Query<BillDetail> q = s.createQuery("FROM BillDetail bd WHERE bd.billId.billId = :billId", BillDetail.class);
             q.setParameter("billId", billId);
             return q.getResultList();
         } catch (Exception e) {

@@ -21,4 +21,5 @@ public interface BillRepository {
     Bill getBillByIdAndResident(Long billId, User user);
     Bill getBillById(Long billId);
     void updateBill(Bill bill);
+    Bill findByApartmentAndMonthAndYear(Long apartmentId, short month, int year);
 }

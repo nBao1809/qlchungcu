@@ -23,7 +23,8 @@ import com.mycompany.repositories.SurveyRepository;
 public class SurveyRepositoryImpl implements SurveyRepository {
 
     @Autowired
-    private LocalSessionFactoryBean factory;    @Override
+    private LocalSessionFactoryBean factory;    
+    @Override
     public List<Survey> getAllSurveys() {
         try {
             Session session = this.factory.getObject().getCurrentSession();
