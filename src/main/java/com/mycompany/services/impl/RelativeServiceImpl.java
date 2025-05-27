@@ -45,12 +45,10 @@ public class RelativeServiceImpl implements RelativeService {
         r.setPhone(params.get("phone")); 
         r.setCccd(params.get("cccd"));
         r.setResidentId(user);
-        
         r.setHasAccessCard(params.containsKey("hasAccessCard") ? 
             Boolean.valueOf(params.get("hasAccessCard")) : false);
         r.setHasVehicleCard(params.containsKey("hasVehicleCard") ? 
             Boolean.valueOf(params.get("hasVehicleCard")) : false);
-        
         Date now = new Date();
         r.setCreatedAt(now);
         r.setUpdatedAt(now);
