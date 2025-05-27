@@ -42,19 +42,22 @@ public class JwtUtils {
         signedJWT.sign(signer);
 
         return signedJWT.serialize();
-    }
+    }    public static String validateTokenAndGetUsername(String token) throws Exception {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            JWSVerifier verifier = new MACVerifier(SECRET);
 
-    public static String validateTokenAndGetUsername(String token) throws Exception {
-        SignedJWT signedJWT = SignedJWT.parse(token);
-        JWSVerifier verifier = new MACVerifier(SECRET);
-
-        if (signedJWT.verify(verifier)) {
-            Date expiration = signedJWT.getJWTClaimsSet().getExpirationTime();
-            if (expiration.after(new Date())) {
-                return signedJWT.getJWTClaimsSet().getSubject();
+            if (signedJWT.verify(verifier)) {
+                Date expiration = signedJWT.getJWTClaimsSet().getExpirationTime();
+                if (expiration.after(new Date())) {
+                    return signedJWT.getJWTClaimsSet().getSubject();
+                }
             }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public static String getRoleFromToken(String token) throws Exception {

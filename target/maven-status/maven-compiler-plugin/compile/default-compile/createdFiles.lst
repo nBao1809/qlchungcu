@@ -17,7 +17,6 @@ com\mycompany\repositories\impl\ComplaintRepositoryImpl.class
 com\mycompany\services\ComplaintService.class
 com\mycompany\controllers\ApiApartmentController.class
 com\mycompany\pojo\Notification.class
-com\mycompany\repositories\impl\BaseRepositoryImpl.class
 com\mycompany\controllers\ApiUserController.class
 com\mycompany\pojo\Relative.class
 com\mycompany\controllers\ApiSurveyController.class

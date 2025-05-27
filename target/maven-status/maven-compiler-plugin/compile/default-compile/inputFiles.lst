@@ -4,13 +4,13 @@ C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\configs\SpringSecurityConfigs.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\configs\ThymeleafConfig.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\configs\WebAppContextConfigs.java
+C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\constants\SurveyStatus.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiApartmentController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiBillController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiComplaintController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiLockerItemController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiRelativeController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiSurveyController.java
-C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiUserBillController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiUserController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiUserSurveyController.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\controllers\ApiVehicleController.java
@@ -43,7 +43,6 @@ C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\repositories\ComplaintRepository.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\repositories\FeeTypeRepository.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\repositories\impl\ApartmentRepositoryImpl.java
-C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\repositories\impl\BaseRepositoryImpl.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\repositories\impl\BillDetailRepositoryImpl.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\repositories\impl\BillRepositoryImpl.java
 C:\Users\tonha\Documents\NetBeansProjects\QLyChungCu\src\main\java\com\mycompany\repositories\impl\ComplaintRepositoryImpl.java

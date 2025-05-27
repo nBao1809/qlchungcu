@@ -65,14 +65,14 @@ public class SpringSecurityConfigs {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(c -> c.disable())
             .authorizeHttpRequests(requests -> requests
-                // // Public endpoints
-                // .requestMatchers( "/api/login").permitAll()
-                // // Admin endpoints
-                // .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
-                // // User endpoints
-                // .requestMatchers("/api/users/**").hasAnyAuthority("RESIDENT", "ADMIN")
-                // // Other API endpoints require authentication
-                // .requestMatchers("/api/**").authenticated()
+                // Public endpoints
+                .requestMatchers( "/api/login").permitAll()
+                // Admin endpoints
+                .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                // User endpoints
+                .requestMatchers("/api/users/**").hasAnyAuthority("RESIDENT", "ADMIN")
+                // Other API endpoints require authentication
+                .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

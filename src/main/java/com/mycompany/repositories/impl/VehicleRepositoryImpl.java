@@ -4,6 +4,7 @@
  */
 package com.mycompany.repositories.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -28,10 +29,13 @@ public class VehicleRepositoryImpl implements VehicleRepository {
     public List<Vehicle> getAllVehicles() {
         try {
             Session s = this.factory.getObject().getCurrentSession();
-            Query<Vehicle> q = s.createNamedQuery("Vehicle.findAll", Vehicle.class);
-            return q.getResultList();
+            String hql = "FROM Vehicle v WHERE v.status = true ORDER BY v.createdAt DESC";
+            Query<Vehicle> q = s.createQuery(hql, Vehicle.class);
+            List<Vehicle> vehicles = q.getResultList();
+            return vehicles != null ? vehicles : new ArrayList<>();
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 
@@ -40,12 +44,26 @@ public class VehicleRepositoryImpl implements VehicleRepository {
         try {
             Session s = this.factory.getObject().getCurrentSession();
             // Lấy phương tiện của cư dân và người thân của họ
-            Query q = s.createQuery(
-                "FROM Vehicle v WHERE v.residentId = :user OR v.relativeId.residentId = :user", Vehicle.class);
-            q.setParameter("user", user);
-            return q.getResultList();
+            String hql = "FROM Vehicle v " +
+                        "LEFT JOIN v.relativeId r " +
+                        "WHERE (v.residentId.id = :userId " +
+                        "OR (r IS NOT NULL AND r.residentId.id = :userId)) " +
+                        "AND v.status = true " +
+                        "ORDER BY v.createdAt DESC";
+            Query<Vehicle> q = s.createQuery(hql, Vehicle.class);
+            q.setParameter("userId", user.getId());
+            List<Vehicle> vehicles = q.getResultList();
+            
+            if (vehicles.isEmpty()) {
+                System.out.println("No vehicles found for user: " + user.getId());
+            }
+            
+            return vehicles != null ? vehicles : new ArrayList<>();
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
+            System.err.println("Error getting vehicles for user: " + user.getId());
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 
@@ -66,7 +84,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
             Session s = this.factory.getObject().getCurrentSession();
             s.update(v);
         } catch (Exception e) {
-            // Có thể log lỗi ở đây nếu cần
+            e.printStackTrace();
         }
     }
 

@@ -51,17 +51,16 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    @Override
+    }    @Override
     public boolean authenticate(String username, String password) {
         try {
             User u = this.getUserByUsername(username);
-            if (u != null) {
+            if (u != null && "ACTIVE".equals(u.getStatus())) {
                 return this.passwordEncoder.matches(password, u.getPassword());
             }
             return false;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

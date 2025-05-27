@@ -391,6 +391,51 @@
 							"path": ["api", "users", "vehicles"]
 						}
 					}
+				},
+                {
+					"name": "Get All Vehicles (Admin)",
+					"request": {
+						"method": "GET", 
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/vehicles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "vehicles"]
+						}
+					}
+				},
+                {
+					"name": "Register Vehicle For Relative",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization", 
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"licensePlate\": \"51F1-23456\",\n    \"vehicleType\": \"MOTORBIKE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/relatives/1/vehicles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "users", "relatives", "1", "vehicles"]
+						}
+					}
 				}
 			]
 		},
@@ -433,33 +478,7 @@
 						}
 					}
 				},
-				{
-					"name": "Update Bill (Admin)",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"status\": \"PAID\",\n    \"details\": [\n        {\n            \"feeTypeId\": 1,\n            \"quantity\": 120,\n            \"unitPrice\": 3500,\n            \"note\": \"Tiền điện tháng 5 (cập nhật)\"\n        }\n    ]\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/admin/bills/1",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "admin", "bills", "1"]
-						}
-					}
-				},
+				
 				{
 					"name": "Delete Bill (Admin)",
 					"request": {
@@ -916,7 +935,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Khảo sát về dịch vụ vệ sinh\",\n    \"description\": \"Đánh giá chất lượng dịch vụ vệ sinh tháng 5/2025\",\n    \"startDate\": \"2025-05-27\",\n    \"endDate\": \"2025-06-03\",\n    \"questions\": [\n        {\n            \"content\": \"Bạn đánh giá thế nào về chất lượng vệ sinh hành lang?\",\n            \"type\": \"RATING\",\n            \"options\": [\"1\", \"2\", \"3\", \"4\", \"5\"]\n        },\n        {\n            \"content\": \"Bạn có hài lòng với tần suất dọn vệ sinh không?\",\n            \"type\": \"YES_NO\"\n        }\n    ]\n}",
+							"raw": "{\n    \"title\": \"Khảo sát về dịch vụ vệ sinh\",\n    \"description\": \"Đánh giá chất lượng dịch vụ vệ sinh tháng 5/2025\",\n    \"startDate\": \"2025-05-27\",\n    \"endDate\": \"2025-06-03\",\n    \"questions\": [\n        {\n            \"questionText\": \"Bạn đánh giá thế nào về chất lượng vệ sinh hành lang?\",\n            \"questionType\": \"RATING\",\n            \"required\": true,\n            \"orderNumber\": 1,\n            \"options\": [\n                {\n                    \"optionText\": \"1\",\n                    \"orderNumber\": 1\n                },\n                {\n                    \"optionText\": \"2\",\n                    \"orderNumber\": 2\n                },\n                {\n                    \"optionText\": \"3\",\n                    \"orderNumber\": 3\n                },\n                {\n                    \"optionText\": \"4\",\n                    \"orderNumber\": 4\n                },\n                {\n                    \"optionText\": \"5\",\n                    \"orderNumber\": 5\n                }\n            ]\n        },\n        {\n            \"questionText\": \"Bạn có hài lòng với tần suất dọn vệ sinh không?\",\n            \"questionType\": \"SINGLE_CHOICE\",\n            \"required\": true,\n            \"orderNumber\": 2,\n            \"options\": [\n                {\n                    \"optionText\": \"Có\",\n                    \"orderNumber\": 1\n                },\n                {\n                    \"optionText\": \"Không\",\n                    \"orderNumber\": 2\n                }\n            ]\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"

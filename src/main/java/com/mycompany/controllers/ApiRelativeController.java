@@ -44,7 +44,7 @@ public class ApiRelativeController {
 
     // (Admin) Xem danh sách toàn bộ người thân
     @GetMapping("/admin/relatives")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<Relative>> getAllRelatives() {
         try {
             return ResponseEntity.ok(relativeService.getAllRelatives());
@@ -55,7 +55,7 @@ public class ApiRelativeController {
 
     // (Cư dân) Xem danh sách người thân của mình
     @GetMapping("/users/relatives")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('RESIDENT')")
     public ResponseEntity<List<Relative>> getMyRelatives(Principal principal) {
         try {
             User user = userService.getUserByUsername(principal.getName());
@@ -67,7 +67,7 @@ public class ApiRelativeController {
 
     // Thêm người thân mới
     @PostMapping("/users/relatives") 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('RESIDENT')")
     public ResponseEntity<Relative> addRelative(Principal principal, @RequestBody Map<String, String> params) {
         try {
             User user = userService.getUserByUsername(principal.getName());
@@ -80,7 +80,7 @@ public class ApiRelativeController {
 
     // Cập nhật thông tin người thân
     @PutMapping("/users/relatives/{relativeId}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('RESIDENT')")
     public ResponseEntity<Relative> updateRelative(Principal principal, @PathVariable("relativeId") Long relativeId, @RequestBody Map<String, String> params) {
         try {
             User user = userService.getUserByUsername(principal.getName());
