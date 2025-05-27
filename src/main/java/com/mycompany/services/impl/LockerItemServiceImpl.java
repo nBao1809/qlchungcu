@@ -38,7 +38,12 @@ public class LockerItemServiceImpl implements LockerItemService {
         LockerItem item = new LockerItem();
         item.setItemName(params.get("itemName"));
         item.setDescription(params.get("description"));
-        item.setReceivedDate(new Date());
+        
+        // Set timestamps
+        Date now = new Date();
+        item.setReceivedDate(now);
+        item.setDeliveredDate(now);
+        
         item.setStatus("RECEIVED");
         item.setNote(params.get("note"));
         item.setReceivedByAdminId(admin);
@@ -58,6 +63,10 @@ public class LockerItemServiceImpl implements LockerItemService {
                 item.setDeliveredDate(new Date());
             }
             item.setReceivedByAdminId(receiver);
+            
+            // Update timestamp
+            item.setReceivedDate(new Date());
+            
             lockerItemRepo.updateLockerItem(item);
         }
     }

@@ -85,10 +85,14 @@ public class SurveyServiceImpl implements SurveyService {
             survey.setSurveyQuestionCollection(questionEntities);
         }
         return surveyRepo.addSurvey(survey);
-    }
-
-    @Override    public Survey updateSurveyStatus(Long surveyId, Map<String, String> params) {
-        return surveyRepo.updateSurveyStatus(surveyId, params);
+    }    @Override    public Survey updateSurveyStatus(Long surveyId, Map<String, String> params) {
+        Survey survey = surveyRepo.getSurveyById(surveyId);
+        if (survey != null) {
+            survey.setStatus(params.get("status"));
+            survey.setUpdatedAt(new Date());
+            return surveyRepo.updateSurveyStatus(surveyId, params);
+        }
+        return null;
     }
 
     @Override    public Map<String, Object> getSurveyDetail(Long surveyId) {

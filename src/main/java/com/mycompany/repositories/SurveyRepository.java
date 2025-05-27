@@ -15,4 +15,5 @@ public interface SurveyRepository {
     List<Survey> getAvailableSurveysForUser();
     Map<String, Object> getSurveyDetailForUser(Long surveyId);
     boolean respondSurvey(Long surveyId,Long userId,SurveyResponse responses);
+    Survey getSurveyById(Long surveyId);
 }

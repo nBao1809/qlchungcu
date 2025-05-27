@@ -50,10 +50,12 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Override
     public Complaint addComplaint(Map<String, String> params, User user, MultipartFile imageProof) {
-        Complaint complaint = new Complaint();
-        complaint.setTitle(params.get("title"));
+        Complaint complaint = new Complaint();        complaint.setTitle(params.get("title"));
         complaint.setContent(params.get("description"));
-        complaint.setSubmittedDate(new Date());
+        Date now = new Date();
+        complaint.setSubmittedDate(now);
+        complaint.setCreatedAt(now);
+        complaint.setUpdatedAt(now);
         complaint.setStatus("PENDING");
         complaint.setResidentId(user);
         if (imageProof != null && !imageProof.isEmpty()) {

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.services.impl;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,11 +28,16 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Override
     public Apartment addApartment(Map<String, String> params) {
         Apartment a = new Apartment();
-        a.setApartmentCode(params.get("apartmentCode"));        a.setBlock(params.get("block"));
+        a.setApartmentCode(params.get("apartmentCode"));        
+        a.setBlock(params.get("block"));
         if (params.get("floor") != null)
             a.setFloor(Integer.parseInt(params.get("floor")));
         a.setStatus(params.get("status"));
-    
+
+        // Set timestamps
+        Date now = new Date();
+        a.setCreatedAt(now);
+        a.setUpdatedAt(now);
         
         return apartmentRepo.addApartment(a);
     }
@@ -44,7 +50,10 @@ public class ApartmentServiceImpl implements ApartmentService {
         if (params.containsKey("block")) a.setBlock(params.get("block"));
         if (params.containsKey("floor")) a.setFloor(Integer.parseInt(params.get("floor")));
         if (params.containsKey("status")) a.setStatus(params.get("status"));
-        // ... các trường khác nếu có ...
+        
+        // Update timestamp
+        a.setUpdatedAt(new Date());
+        
         apartmentRepo.updateApartment(a);
         return a;
     }

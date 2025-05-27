@@ -143,9 +143,7 @@ public class SurveyRepositoryImpl implements SurveyRepository {
             e.printStackTrace(); // Log the exception
             throw new RuntimeException("Failed to get available surveys", e);
         }
-    }
-
-    @Override
+    }    @Override
     public Map<String, Object> getSurveyDetailForUser(Long surveyId) {
         try {
             return getSurveyDetail(surveyId);
@@ -153,7 +151,21 @@ public class SurveyRepositoryImpl implements SurveyRepository {
             e.printStackTrace(); // Log the exception
             throw new RuntimeException("Failed to get survey details for user", e);
         }
-    }    @Override
+    }
+
+    @Override
+    public Survey getSurveyById(Long surveyId) {
+        try {
+            Session session = this.factory.getObject().getCurrentSession();
+            Survey survey = session.createNamedQuery("Survey.findBySurveyId", Survey.class)
+                .setParameter("surveyId", surveyId)
+                .uniqueResult();
+            return survey;
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
+            throw new RuntimeException("Failed to get survey by id", e);
+        }
+    }@Override
     public boolean respondSurvey(Long surveyId, Long userId, SurveyResponse response) {
         try {
             Session session = this.factory.getObject().getCurrentSession();

@@ -49,12 +49,11 @@ public class VehicleServiceImpl implements VehicleService {
         v.setLicensePlate(params.get("licensePlate"));
         v.setVehicleType(params.get("vehicleType"));
         
-        // Set default dates
+        // Set timestamps for new vehicle
         Date now = new Date();
-        v.setCreatedAt(now);
-        v.setUpdatedAt(now);
+        v.setCreatedAt(now);  // Tạo thời gian khi tạo mới
+        v.setUpdatedAt(now);  // Thời gian cập nhật ban đầu trùng với thời gian tạo
         
-        // Set default status to true (will be converted to 1 in database)
         v.setStatus(true);
     
         if (params.containsKey("relativeId")) {
@@ -109,8 +108,8 @@ public class VehicleServiceImpl implements VehicleService {
         if (params.containsKey("status")) {
             v.setStatus("1".equals(params.get("status")));
         }
-        // Update the updated_at timestamp
-        v.setUpdatedAt(new Date());
+        // Update timestamp
+        v.setUpdatedAt(new Date()); // Cập nhật thời gian khi sửa
         vehicleRepo.updateVehicle(v);
         return v;
     }
