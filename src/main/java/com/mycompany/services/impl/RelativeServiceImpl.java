@@ -44,7 +44,16 @@ public class RelativeServiceImpl implements RelativeService {
         r.setPhone(params.get("phone"));
         r.setCccd(params.get("cccd"));
         r.setResidentId(user);
-        // ... các trường khác nếu có ...
+        if (params.containsKey("hasAccessCard"))
+            r.setHasAccessCard(Boolean.valueOf(params.get("hasAccessCard")));
+        if (params.containsKey("hasVehicleCard"))
+            r.setHasVehicleCard(Boolean.valueOf(params.get("hasVehicleCard")));
+        if (params.containsKey("createdAt"))
+            r.setCreatedAt(java.sql.Timestamp.valueOf(params.get("createdAt")));
+        if (params.containsKey("updatedAt"))
+            r.setUpdatedAt(java.sql.Timestamp.valueOf(params.get("updatedAt")));
+        if (params.containsKey("status"))
+            r.setStatus(Boolean.valueOf(params.get("status")));
         return relativeRepo.addRelative(r);
     }
 
@@ -66,7 +75,16 @@ public class RelativeServiceImpl implements RelativeService {
         if (params.containsKey("cccd")) {
             r.setCccd(params.get("cccd"));
         }
-        // ... các trường khác nếu có ...
+        if (params.containsKey("hasAccessCard"))
+            r.setHasAccessCard(Boolean.valueOf(params.get("hasAccessCard")));
+        if (params.containsKey("hasVehicleCard"))
+            r.setHasVehicleCard(Boolean.valueOf(params.get("hasVehicleCard")));
+        if (params.containsKey("createdAt"))
+            r.setCreatedAt(java.sql.Timestamp.valueOf(params.get("createdAt")));
+        if (params.containsKey("updatedAt"))
+            r.setUpdatedAt(java.sql.Timestamp.valueOf(params.get("updatedAt")));
+        if (params.containsKey("status"))
+            r.setStatus(Boolean.valueOf(params.get("status")));
         relativeRepo.updateRelative(r);
         return r;
     }
