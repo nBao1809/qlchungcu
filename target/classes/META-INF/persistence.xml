@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+  <!-- Define Persistence Unit -->
+  <persistence-unit name="my_persistence_unit">
+    <class>com.mycompany.pojo.ResponseDetail</class>
+    <class>com.mycompany.pojo.Survey</class>
+    <class>com.mycompany.pojo.ResidentApartment</class>
+    <class>com.mycompany.pojo.Vehicle</class>
+    <class>com.mycompany.pojo.Relative</class>
+    <class>com.mycompany.pojo.SurveyQuestion</class>
+    <class>com.mycompany.pojo.FeeType</class>
+    <class>com.mycompany.pojo.PaymentTransaction</class>
+    <class>com.mycompany.pojo.Admin</class>
+    <class>com.mycompany.pojo.Complaint</class>
+    <class>com.mycompany.pojo.LockerItem</class>
+    <class>com.mycompany.pojo.Bill</class>
+    <class>com.mycompany.pojo.SurveyResponse</class>
+    <class>com.mycompany.pojo.BillDetail</class>
+    <class>com.mycompany.pojo.QuestionOption</class>
+    <class>com.mycompany.pojo.Apartment</class>
+    <class>com.mycompany.pojo.Notification</class>
+    <class>com.mycompany.pojo.Resident</class>
+    <class>com.mycompany.pojo.User</class>
+  </persistence-unit>
+</persistence>

@@ -1,0 +1,182 @@
+{
+  "info": {
+    "_postman_id": "qlc-api-collection-all-2025-05-27",
+    "name": "QLyChungCu API Full Test",
+    "description": "Kiểm thử toàn bộ API quản lý cư dân, căn hộ, phương tiện, người thân, tủ đồ, khiếu nại, khảo sát, hóa đơn cho admin và cư dân. Bao gồm các luồng đăng ký, đăng nhập, phân quyền, truy xuất, tạo mới, cập nhật, thanh toán online.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8080/QLyChungCu/api" },
+    { "key": "token", "value": "" },
+    { "key": "admin_token", "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnVzZXIiLCJyb2xlIjoiQURNSU4iLCJleHAiOjE3NDgzNzk1OTksImlhdCI6MTc0ODI5MzE5OX0.B3khFA03JZ0mjbzeOXC7XPjVnOyq_BBRm3k1dmyhTS8" },
+    { "key": "bill_id", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "User - Đăng ký cư dân",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "username", "value": "resident_test", "type": "text" },
+            { "key": "password", "value": "123456", "type": "text" },
+            { "key": "fullName", "value": "Nguyen Van Test", "type": "text" },
+            { "key": "avatar", "type": "file" }
+          ]
+        },
+        "url": { "raw": "{{base_url}}/admin/users", "host": ["{{base_url}}"], "path": ["admin", "users"] }
+      }
+    },
+    {
+      "name": "User - Đăng nhập",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "username", "value": "resident_test", "type": "text" },
+            { "key": "password", "value": "123456", "type": "text" }
+          ]
+        },
+        "url": { "raw": "{{base_url}}/login", "host": ["{{base_url}}"], "path": ["login"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    pm.collectionVariables.set('token', pm.response.json().token);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Đăng nhập",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "username", "value": "adminuser", "type": "text" },
+            { "key": "password", "value": "admin123", "type": "text" }
+          ]
+        },
+        "url": { "raw": "{{base_url}}/login", "host": ["{{base_url}}"], "path": ["login"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    pm.collectionVariables.set('admin_token', pm.response.json().token);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "User - Lấy profile",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{base_url}}/auth/profile", "host": ["{{base_url}}"], "path": ["auth", "profile"] }
+      }
+    },
+    {
+      "name": "Admin - Danh sách user",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{admin_token}}" } ],
+        "url": { "raw": "{{base_url}}/admin/users", "host": ["{{base_url}}"], "path": ["admin", "users"] }
+      }
+    },
+    {
+      "name": "Apartment - Danh sách căn hộ",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{admin_token}}" } ],
+        "url": { "raw": "{{base_url}}/admin/apartments", "host": ["{{base_url}}"], "path": ["admin", "apartments"] }
+      }
+    },
+    {
+      "name": "Vehicle - Danh sách xe của cư dân",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{base_url}}/users/vehicles", "host": ["{{base_url}}"], "path": ["users", "vehicles"] }
+      }
+    },
+    {
+      "name": "Relative - Danh sách người thân của cư dân",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{base_url}}/users/relatives", "host": ["{{base_url}}"], "path": ["users", "relatives"] }
+      }
+    },
+    {
+      "name": "Locker - Danh sách tủ đồ của cư dân",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{base_url}}/users/locker-items", "host": ["{{base_url}}"], "path": ["users", "locker-items"] }
+      }
+    },
+    {
+      "name": "Complaint - Gửi khiếu nại",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "title", "value": "Khiếu nại phí dịch vụ", "type": "text" },
+            { "key": "content", "value": "Nội dung khiếu nại...", "type": "text" },
+            { "key": "imageProof", "type": "file" }
+          ]
+        },
+        "url": { "raw": "{{base_url}}/users/complaints", "host": ["{{base_url}}"], "path": ["users", "complaints"] }
+      }
+    },
+    {
+      "name": "Survey - Danh sách khảo sát cư dân",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{base_url}}/users/surveys", "host": ["{{base_url}}"], "path": ["users", "surveys"] }
+      }
+    },
+    {
+      "name": "Bill - Danh sách hóa đơn cư dân",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{base_url}}/users/bills", "host": ["{{base_url}}"], "path": ["users", "bills"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200 && Array.isArray(pm.response.json()) && pm.response.json().length > 0) {",
+              "    pm.collectionVariables.set('bill_id', pm.response.json()[0].id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}
